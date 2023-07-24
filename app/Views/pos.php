@@ -87,7 +87,7 @@
                             <div class="card-body">
                                 <div id="itemKeranjang">
                                     <?php foreach ($keranjang as $key => $value) :?>
-                                    <div class="callout callout-info">
+                                    <div class="callout callout-info" id="itemProduk<?=$value->idProduk?>">
                                         <div class="row">
                                             <div class="col-2 center">
                                                 <h3><span class="badge badge-primary"><?=$value->jumlah?></span></h3>

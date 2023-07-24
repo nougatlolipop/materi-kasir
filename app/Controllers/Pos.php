@@ -105,4 +105,25 @@ class Pos extends BaseController
         echo $keranjangNew[0]->data;
 
     }
+
+    function deleteKeranjang() {
+        $id = $this->request->getVar('idProduk');
+        $keranjang = $this->modelKeranjang->findAll();
+        $keranjang = json_decode($keranjang[0]->data)->data;
+        $itemKeranjang = [];
+
+        foreach ($keranjang as $key => $value) {
+            if ($value->idProduk !== $id) {
+                $itemKeranjang[]=$value;
+            }
+        }
+
+        $dataUpdate = [
+            'data' => json_encode(['data' => $itemKeranjang])
+        ];
+        $this->modelKeranjang->update(1, $dataUpdate);
+
+        $keranjangNew = $this->modelKeranjang->where(['id' => 1])->findAll();
+        echo $keranjangNew[0]->data;
+    }
 }
