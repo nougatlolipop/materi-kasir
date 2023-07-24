@@ -28,13 +28,23 @@ class Pos extends BaseController
             $produk = $this->modelProduk->getProduct();
         }
         $keranjang=$this->modelKeranjang->findAll();
-        $keranjang = json_decode($keranjang[0]->data)->data;
+        if (count($keranjang)>0) {
+            $keranjang = json_decode($keranjang[0]->data)->data;
+            $total=0;
+            foreach ($keranjang as $key => $value) {
+                $total = $total+((int)$value->jumlah*(int)$value->hargaProduk);
+            }
+        }else{
+            $keranjang=[];
+        }
+
         $data = [
             'title' => 'POS',
             'breadcrumbs' => ['Home', 'POS'],
             'kategori' => $this->modelKategori->findAll(),
             'produk' => $produk->getResult(),
             'keranjang' => $keranjang,
+            'total'=>$total
         ];
         return view('pos', $data);
     }

@@ -29,6 +29,9 @@
 
             <!-- Main content -->
             <section class="content">
+            <div class="callout callout-info">
+                <h1 class="harga">Total : <?= number_to_currency((float)$total, 'IDR', 'id_ID',2) ?></h1>
+            </div>
                 <h5 class="mb-2">Kategori</h5>
                 <div class="row">
                     <?php foreach ($kategori as $key => $item) : ?>
