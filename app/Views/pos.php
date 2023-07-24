@@ -62,7 +62,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <?php foreach ($produk as $prd => $prod) : ?>
-                                        <div class="col-md-3" onclick="addKeranjang('<?= $prod->idProduk ?>')">
+                                        <div class="col-md-3" onclick="<?= $prod->isReadyProduk ? 'addKeranjang('.$prod->idProduk.')':''?>">
                                             <div class="card shadow <?= $prod->isReadyProduk ? '' : 'card-disabled' ?>" >
                                                 <img src="<?= base_url('assets/images/' . $prod->slugKategori . '/' . $prod->gambarProduk) ?>" class="card-img-top" style="height: 12rem;">
                                                 <div class="card-body">
