@@ -67,6 +67,10 @@
                     let total = 0;
                     JSON.parse(response)['data'].map((item, idx) => {
                         total = total + parseInt(item.jumlah) * parseInt(item.hargaProduk)
+                        hargaCurrency = new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR',
+                        }).format(item.hargaProduk).replace(/,00$/, '')
                         let ele = '';
                         ele += '<div class="callout callout-info" id="itemProduk' + item.idProduk + '">'
                         ele += '<div class="row">'
@@ -75,7 +79,7 @@
                         ele += '</div>'
                         ele += '<div class="col-8">'
                         ele += '<h5>' + item.namaProduk + '</h5>'
-                        ele += '<p>' + item.hargaProduk + '</p>'
+                        ele += '<p>' + hargaCurrency + '</p>'
                         ele += '</div>'
                         ele += '<div class="col-2">'
                         ele += '<button type="button" class="btn btn-danger" onclick="hapusKeranjang(' + item.idProduk + ')"><i class="fas fa-trash"></i></button>'
@@ -89,7 +93,7 @@
                     let formatCurrency = new Intl.NumberFormat('id-ID', {
                         style: 'currency',
                         currency: 'IDR',
-                    }).format(total)
+                    }).format(total).replace(/,00$/, '')
                     $('.harga').append('Total : ' + formatCurrency);
                 },
                 error: function(xhr, status, error) {
@@ -112,15 +116,37 @@
                         total = total + parseInt(item.jumlah) * parseInt(item.hargaProduk)
                     });
 
-                    let ele = document.getElementById('itemProduk'+id)
-                        ele.remove()
+                    let ele = document.getElementById('itemProduk' + id)
+                    ele.remove()
 
                     $('.harga').empty();
                     let formatCurrency = new Intl.NumberFormat('id-ID', {
                         style: 'currency',
                         currency: 'IDR',
-                    }).format(total)
+                    }).format(total).replace(/,00$/, '')
                     $('.harga').append('Total : ' + formatCurrency);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', status, xhr);
+                }
+            });
+        }
+
+        function bayar(user) {
+            $.ajax({
+                url: "/pos/bayar",
+                type: "POST",
+                data: {
+                    'user': user
+                },
+                success: function(response) {
+                    console.log(JSON.parse(response));
+                    if (JSON.parse(response)['status']) {
+                        // show modals
+                        $('#modalbayar').modal('show')
+                    } else {
+                        alert('keranjang masih kosong')
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.log('Error:', status, xhr);

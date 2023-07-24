@@ -62,6 +62,7 @@ class Pos extends BaseController
                 $itemKeranjang[$key] = $value;
             }
             $itemKeranjang['jumlah'] = 1;
+            $itemKeranjang['keterangan'] = '';
             $dataInsert = [
                 'id' => 1,
                 'data' => json_encode(['data' => [$itemKeranjang]])
@@ -74,6 +75,7 @@ class Pos extends BaseController
                 $itemKeranjang[$key] = $value;
             }
             $itemKeranjang['jumlah'] = 1;
+            $itemKeranjang['keterangan'] = '';
 
             $keranjangNew = array_merge($keranjang, [$itemKeranjang]);
             $jsonKeranjangNew = json_encode(['data' => $keranjangNew]);
@@ -106,7 +108,7 @@ class Pos extends BaseController
 
     }
 
-    function deleteKeranjang() {
+    public function deleteKeranjang() {
         $id = $this->request->getVar('idProduk');
         $keranjang = $this->modelKeranjang->findAll();
         $keranjang = json_decode($keranjang[0]->data)->data;
@@ -125,5 +127,43 @@ class Pos extends BaseController
 
         $keranjangNew = $this->modelKeranjang->where(['id' => 1])->findAll();
         echo $keranjangNew[0]->data;
+    }
+
+    public function bayarPesanan() {
+        $keranjang = $this->modelKeranjang->where(['id' => 1])->findAll();
+
+        if (count($keranjang)==0) {
+            echo json_encode(['status'=>false]);
+            exit; //program berhenti membaca coding di baris ini
+        }
+
+        $keranjang = json_decode($keranjang[0]->data)->data;
+        if(count($keranjang)>0){
+            echo json_encode(['status'=>true]);
+        }else{
+            echo json_encode(['status'=>false]);
+        };
+        
+    }
+
+    public function simpanTransaksi() {
+        $keranjangRaw = $this->modelKeranjang->where(['id' => 1])->findAll();
+        $keranjang = json_decode($keranjangRaw[0]->data)->data;
+        $grandTotal=0;
+        foreach ($keranjang as $key => $value) {
+            $grandTotal=$grandTotal+((int)$value->jumlah*(int)$value->hargaProduk);
+        }
+        $dataSimpan = [
+            'user' => user()->email,
+            'grandTotal'=>$grandTotal,
+            'cash'=>$this->request->getVar('cash'),
+            'item'=>$keranjangRaw[0]->data,
+        ];
+        dd($dataSimpan);
+
+        //proses simpan
+
+        // simpan kedalam database dengan table transaksi (id,emailKasir,granTotal,cash,item,tanggalBayar)
+        // jika berhasil hapus keranjang dan kembali ke halaman pos
     }
 }
