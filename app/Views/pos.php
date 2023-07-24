@@ -97,7 +97,7 @@
                                                 <p><?=$value->hargaProduk?></p>
                                             </div>
                                             <div class="col-2">
-                                            <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                            <button type="button" class="btn btn-danger" onclick="hapusKeranjang(<?=$value->idProduk?>)"><i class="fas fa-trash"></i></button>
                                             </div>
                                         </div>
                                     </div>

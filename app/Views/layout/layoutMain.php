@@ -79,7 +79,7 @@
                         ele += '<p>' + item.hargaProduk + '</p>'
                         ele += '</div>'
                         ele += '<div class="col-2">'
-                        ele += '<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>'
+                        ele += '<button type="button" class="btn btn-danger" onclick="hapusKeranjang(' + item.idProduk + ')"><i class="fas fa-trash"></i></button>'
                         ele += '</div>'
                         ele += '</div>'
                         ele += ' </div>'
@@ -97,6 +97,10 @@
                     console.log('Error:', status, xhr);
                 }
             })
+        }
+
+        function hapusKeranjang(id) {
+            console.log(id);
         }
     </script>
 </body>

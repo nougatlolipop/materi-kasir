@@ -28,9 +28,10 @@ class Pos extends BaseController
             $produk = $this->modelProduk->getProduct();
         }
         $keranjang=$this->modelKeranjang->findAll();
+        $total=0;
         if (count($keranjang)>0) {
             $keranjang = json_decode($keranjang[0]->data)->data;
-            $total=0;
+            
             foreach ($keranjang as $key => $value) {
                 $total = $total+((int)$value->jumlah*(int)$value->hargaProduk);
             }
